@@ -7,9 +7,12 @@ import { ThreeCircles } from "react-loader-spinner";
 import "react-toastify/dist/ReactToastify.css";
 import Link from "next/link";
 import { toast, ToastContainer } from "react-toastify";
+import { useRouter } from "next/navigation";
+
 
 const Login = () => {
 
+  const router = useRouter();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -40,20 +43,23 @@ const Login = () => {
           const errorResult = await response.json();
           reject(errorResult.message);
           setLoading(false);
-          setDisable(false)      
+          setDisable(false);      
           return;
         }
 
         const result = await response.json();
         resolve(result.message);
-        setLoading(false);
-        setDisable(false)
-    
+
+        window.sessionStorage.setItem('accessAuth', result.data.access);
+        window.sessionStorage.setItem('user', JSON.stringify(result.data.account));
+
+        router.push('/admin/dashboard');
+
         }catch(error){
           setLoading(false);
-          setDisable(false)
+          setDisable(false);
       
-          reject(error.message)
+          reject(error.message);
         }
     });
 

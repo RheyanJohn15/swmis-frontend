@@ -33,7 +33,11 @@ module.exports = {
       'info': '#87CEEB',
       'info-hover': '#00BFFF',
       'danger': '#B22222',
-      'danger-hover': '#8B0000'
+      'danger-hover': '#8B0000',
+      'white': '#fff',
+      'black': '#000',
+      'fade': '#ccc',
+      'grey': '#555'
     }
   },
   plugins: [],

@@ -7,6 +7,17 @@ const text = {
         username: 'Enter your username',
         password: 'Enter your password',
         button: 'Login'
+    },
+    Navigation: {
+        dash: "Dashboard",
+        td: "Truck & Drivers",
+        routes: "Routes",
+        sched: "Schedules",
+        complaints: "Residence Complaints",
+        nav: "Map & Navigation",
+        profile: "Profile",
+        settings: "Settings",
+        logout: "Logout",
     }
 }
 
