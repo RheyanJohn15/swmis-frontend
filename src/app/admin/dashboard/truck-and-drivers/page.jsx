@@ -14,7 +14,7 @@ const TruckAndDriverPage = () => {
 
 const Header = () => {
     return (
-      <h1 className="text-2xl text-white font-semibold">
+      <h1 className="text-2xl font-semibold">
         {text.App}
       </h1>
     );

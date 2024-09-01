@@ -16,12 +16,13 @@ import text from "../text";
 
 export default function Sidebar({children, header, selected}) {
 
+  
   return (
     <div className="bg-dark h-full flex">
     <SideNav select={selected} />
     <div className="w-full">
-      <div className="h-[35px] m-4 rounded p-8 flex items-center bg-grey">{header}</div>
-      <div className="h-auto m-4 rounded  bg-background">
+      <div className="h-[35px] m-4 rounded p-8 flex items-center bg-grey text-white">{header}</div>
+      <div className="h-[83vh] overflow-auto m-4 rounded  bg-background">
         {children}
       </div>
     </div>
@@ -49,7 +50,7 @@ const SideNav = ({select}) => {
       <NavItem selected={selected === 0} tooltip={text.Navigation.dash} id={0} setSelected={setSelected} link="/admin/dashboard">
         <BsHouseDoorFill />
       </NavItem>
-      <NavItem selected={selected === 1} tooltip={text.Navigation.td} id={1} setSelected={setSelected} link="/admin/dashboard/truck-and-driver">
+      <NavItem selected={selected === 1} tooltip={text.Navigation.td} id={1} setSelected={setSelected} link="/admin/dashboard/truck-and-drivers">
         <GiMineTruck />
       </NavItem>
       <NavItem selected={selected === 2} id={2} tooltip={text.Navigation.routes} setSelected={setSelected} link="/admin/dashboard/routes">
