@@ -4,12 +4,13 @@ import { FiTruck } from "react-icons/fi";
 import { BsPersonAdd } from "react-icons/bs"; 
 import text from "../text";
 import Modal from "../Parts/Modal";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 const TruckAndDriver = () =>{
 
     const [modalOpen, setModalOpen] = useState(false);
     const [modalContent, setModalContent] = useState(null);
     const [title, setTitle] = useState('');
+    
     return (
       <>
           <div className="overflow-hidden bg-white shadow-md dark:bg-gray-800 sm:rounded-lg">
@@ -47,40 +48,71 @@ const Driver = () => {
     const [contact, setContact] = useState('');
     const [address, setAddress] = useState('');
     
-    const addDriver = (e) => {
-        e.preventdefault();
+    const addDriver = async (e) => {
+        e.preventDefault();
+
+        const data = {
+            fname: fname,
+            lname: lname,
+            username: username,
+            password: password,
+            license: license,
+            contact: contact,
+            address: address,
+        }
+
+        const accessAuth = window.sessionStorage.getItem('accessAuth');
+
+        const api  = `${process.env.NEXT_PUBLIC_API_URL}/truckdriver/adddriver/`;
+        const response = await fetch(api, {
+            method: "POST",
+            headers: {
+                "Content-Type": 'application/json',
+                "Authorization": `Bearer ${accessAuth}`
+            },
+            body: JSON.stringify(data)
+        })
+
+        const result = await response.json();
+
+        if(result.status == 'success'){
+            console.log('success');
+        }else{
+            console.log(result);
+        }
+
     }
     return (<div className="p-8">
             <form onSubmit={addDriver}>
                 <div className="grid gap-4 mb-4 sm:grid-cols-2">
                     <div>
                         <label for="fname" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{text.truck_drivers.addDModal.fname}</label>
-                        <input type="text"  onChange={()=>setFname((e)=> e.target.value)} id="fname" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder={text.truck_drivers.addDModal.fname} required="" />
+                        <input type="text"  onChange={(e)=>setFname(e.target.value)} id="fname" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder={text.truck_drivers.addDModal.fname} required="" />
                     </div>
                     <div>
                         <label for="lname" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{text.truck_drivers.addDModal.lname}</label>
-                        <input type="text"  onChange={()=>setLname((e)=> e.target.value)} id="lname" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder={text.truck_drivers.addDModal.lname} required="" />
+                        <input type="text"  onChange={(e)=>setLname(e.target.value)} id="lname" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder={text.truck_drivers.addDModal.lname} required="" />
                     </div>
                     <div>
                         <label for="username" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{text.truck_drivers.addDModal.username}</label>
-                        <input type="text"  onChange={()=>setUsername((e)=> e.target.value)} id="username" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder={text.truck_drivers.addDModal.username} required="" />
+                        <input type="text"  onChange={(e)=>setUsername(e.target.value)} id="username" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder={text.truck_drivers.addDModal.username} required="" />
                     </div>
                     <div>
                         <label for="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{text.truck_drivers.addDModal.password}</label>
-                        <input type="password"  onChange={()=>setPassword((e)=> e.target.value)} id="password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder={text.truck_drivers.addDModal.password} required="" />
+                        <input type="password"  onChange={(e)=>setPassword(e.target.value)} id="password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder={text.truck_drivers.addDModal.password} required="" />
                     </div>
                     <hr className="border-1 border-grey col-span-2 my-4" />
                     <div>
                         <label for="license" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{text.truck_drivers.addDModal.license}</label>
-                        <input type="text"  onChange={()=>setLicense((e)=> e.target.value)} id="license" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder={text.truck_drivers.addDModal.license} required="" />
+                        <input type="text"  onChange={(e)=>setLicense(e.target.value)} id="license" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder={text.truck_drivers.addDModal.license} required="" />
                     </div>
                     <div>
                         <label for="contact" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{text.truck_drivers.addDModal.contact}</label>
-                        <input type="text"  onChange={()=>setContact((e)=> e.target.value)} id="contact" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder={text.truck_drivers.addDModal.contact} required="" />
+                        <input type="text"  onChange={(e)=>setContact(e.target.value)} id="contact" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder={text.truck_drivers.addDModal.contact} required="" />
                     </div>
                     <div className="sm:col-span-2">
                         <label for="address" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address{text.truck_drivers.addDModal.address}</label>
-                        <input type="text" id="address"  onChange={()=>setAddress((e)=> e.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder={text.truck_drivers.addDModal.address} required="" />
+                        <input type="text" id="address"  onChange={(e)=>setAddress(e.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder={text.truck_drivers.addDModal.address} required="" />
                     </div>
                 </div>
                 <div className="flex justify-end w-full">
@@ -99,8 +131,58 @@ const Truck = () => {
     const [canCarry, setCanCarry] = useState('');
     const [driver, setDriver] = useState('');
 
-    const addTruck = (e) => {
-        e.preventdefault()
+    const [driverList, setDriverList] = useState([]);
+    const accessAuth = window.sessionStorage.getItem('accessAuth');
+
+    const fetchAllDrivers = async ()=> {
+
+        const api = `${process.env.NEXT_PUBLIC_API_URL}/truckdriver/listdriver/`
+        const response = await fetch(api, {
+            method: "GET",
+            headers: {
+                'Content-Type': "application/json",
+                'Authorization' : `Bearer ${accessAuth}`
+            }
+        });
+
+        const result = await response.json();
+
+        setDriverList(result.data);
+    }
+    useEffect(()=> {
+       fetchAllDrivers();
+    }, []);
+
+  
+
+    const addTruck = async (e) => {
+        e.preventDefault();
+
+        const data = {
+            model: model,
+            plate_number: plateNum,
+            can_carry: canCarry,
+            driver: driver   
+        }
+
+        const api = `${process.env.NEXT_PUBLIC_API_URL}/truckdriver/addtruck/`;
+        const accessAuth = window.sessionStorage.getItem('accessAuth');
+        const response = await fetch(api,{
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${accessAuth}`,
+            },
+            body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+
+        if(result.status == 'success'){
+            console.log('success');
+        }else{
+            console.log(result);
+        }
     }
 
     return (<div className="p-8">
@@ -108,24 +190,23 @@ const Truck = () => {
                   <div className="grid gap-4 mb-4 sm:grid-cols-2">
                       <div>
                           <label for="model" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{text.truck_drivers.addTModal.model}</label>
-                          <input type="text" onChange={()=>setModel((e)=> e.target.value)} id="model" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder={text.truck_drivers.addTModal.model} required="" />
+                          <input type="text" onChange={(e)=>setModel(e.target.value)} id="model" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder={text.truck_drivers.addTModal.model} required="" />
                       </div>
                       <div>
                           <label for="plate" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{text.truck_drivers.addTModal.plate}</label>
-                          <input type="text"  onChange={()=>setPlateNum((e)=> e.target.value)} id="plate" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder={text.truck_drivers.addTModal.plate} required="" />
+                          <input type="text"  onChange={(e)=>setPlateNum(e.target.value)} id="plate" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder={text.truck_drivers.addTModal.plate} required="" />
                       </div>
                       <div>
                           <label for="capacity" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{text.truck_drivers.addTModal.carry}</label>
-                          <input type="text" id="capacity"  onChange={()=>setCanCarry((e)=> e.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder={text.truck_drivers.addTModal.carry} required="" />
+                          <input type="text" id="capacity"  onChange={(e)=>setCanCarry(e.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder={text.truck_drivers.addTModal.carry} required="" />
                       </div>
                       <div>
                           <label for="assigned" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{text.truck_drivers.addTModal.driver}</label>
-                          <select id="assigned"  onChange={()=>setDriver((e)=> e.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                              <option selected="">Select category</option>
-                              <option value="TV">TV/Monitors</option>
-                              <option value="PC">PC</option>
-                              <option value="GA">Gaming/Console</option>
-                              <option value="PH">Phones</option>
+                          <select id="assigned"  onChange={(e)=>setDriver(e.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                          <option selected disabled value="">------Select driver------</option>
+                             {driverList.map((list, index)=> (
+                              <option value={list.id}>{list.first_name} {list.last_name}</option>
+                             ))}
                           </select>
                       </div>
                      
