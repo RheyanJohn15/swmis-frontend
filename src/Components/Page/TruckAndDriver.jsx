@@ -5,6 +5,9 @@ import { BsPersonAdd } from "react-icons/bs";
 import text from "../text";
 import Modal from "../Parts/Modal";
 import { useState, useEffect } from "react";
+import Loading from "./Loading";
+import Table from "../Parts/Tables";
+
 const TruckAndDriver = () =>{
 
     const [modalOpen, setModalOpen] = useState(false);
@@ -32,6 +35,8 @@ const TruckAndDriver = () =>{
               </button>
              </div>
             </div>
+
+            <Table />
           </div>
           <Modal modalOpen={modalOpen} setModalOpen={setModalOpen} content={modalContent} title={title} />
       </>
@@ -111,7 +116,7 @@ const Driver = () => {
                         <input type="text"  onChange={(e)=>setContact(e.target.value)} id="contact" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder={text.truck_drivers.addDModal.contact} required="" />
                     </div>
                     <div className="sm:col-span-2">
-                        <label for="address" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address{text.truck_drivers.addDModal.address}</label>
+                        <label for="address" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{text.truck_drivers.addDModal.address}</label>
                         <input type="text" id="address"  onChange={(e)=>setAddress(e.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder={text.truck_drivers.addDModal.address} required="" />
                     </div>
                 </div>
@@ -205,7 +210,7 @@ const Truck = () => {
                           <select id="assigned"  onChange={(e)=>setDriver(e.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                           <option selected disabled value="">------Select driver------</option>
                              {driverList.map((list, index)=> (
-                              <option value={list.id}>{list.first_name} {list.last_name}</option>
+                              <option key={index} value={list.id}>{list.first_name} {list.last_name}</option>
                              ))}
                           </select>
                       </div>

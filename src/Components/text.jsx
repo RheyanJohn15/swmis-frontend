@@ -32,7 +32,7 @@ const text = {
             lname: "Lastname",
             contact: "Contact",
             license: "License",
-            address: "address",
+            address: "Address",
             add: "Submit Driver Details"
         },
         addTModal: {
