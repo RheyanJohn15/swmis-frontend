@@ -103,6 +103,7 @@ const Login = () => {
                 href="/"
                 className="mx-auto flex gap-4 items-center flex-col justify-center"
               >
+                
                 <Image src="/logo/logo.png" width={100} height={100} alt="Logo" />
                 <h1 className="text-2xl font-semibold text-primary">{text.Login.title}</h1>
               </Link>
