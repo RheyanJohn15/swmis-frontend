@@ -1,3 +1,4 @@
+import { RiDeleteBin2Line } from "react-icons/ri"; 
 import { BsFillTrashFill } from "react-icons/bs";
 import { BsFillEyeFill } from "react-icons/bs";
 import { BiEdit } from "react-icons/bi";
@@ -6,9 +7,63 @@ import {
   MaterialReactTable,
   useMaterialReactTable,
 } from 'material-react-table';
-
+import { confirmAlert } from 'react-confirm-alert'; 
+import 'react-confirm-alert/src/react-confirm-alert.css';
+import Loading from "../Page/Loading";
 
 const Table = ({data, col}) => {
+
+  const handleDelete = (dataId, deleteLink) => {
+    confirmAlert({
+      customUI: ({ onClose }) => {
+
+      
+        const deleteData = async (id, link)=> {
+          const accessAuth = window.sessionStorage.getItem('accessAuth');
+          const api = `${process.env.NEXT_PUBLIC_API_URL}/${link}`;
+
+          const response = await fetch(api, {
+             method:"POST",
+             headers:{
+              'Content-Type': "application/json",
+              'Authorization': `Bearer ${accessAuth}`
+             }, body: JSON.stringify({id:id})
+          });
+          
+          const data = await response.json();
+          onClose();
+          if(data.status == 'success'){
+            
+          }
+        }
+        return (
+          <div className="bg-white rounded-lg shadow-lg p-6 w-96 mx-auto flex justify-center flex-col items-center text-center">
+            <h1 className="text-primary text-6xl font-bold"> <RiDeleteBin2Line /></h1>
+            <h2 className="text-primary text-2xl mb-4 font-semibold">Confirm Delete</h2>
+            <p className="text-grey mb-6">Are you sure you want to delete this item?</p>
+            <div className="flex justify-around gap-4 w-full">
+              <button
+                onClick={onClose}
+                className="bg-secondary hover:bg-secondary-hover w-full text-white font-bold py-2 px-4 rounded-lg"
+              >
+                No
+              </button>
+
+              <button
+                onClick={() => {
+                  deleteData(dataId, deleteLink)
+                  onClose();
+                }}
+                className="bg-danger hover:bg-danger-hover w-full text-white font-bold py-2 px-4 rounded-lg"
+              >
+                Yes
+              </button>
+            </div>
+          </div>
+        );
+      },
+    });
+  };
 
   const actionColumn = useMemo(
     () => ({
@@ -25,7 +80,7 @@ const Table = ({data, col}) => {
             <button onClick={()=>alert(row.original.id)} class="border border-info text-info hover:bg-info hover:text-white transition-colors duration-300 px-4 py-2 rounded">
               <BsFillEyeFill />
             </button>
-           <button onClick={()=>alert(row.original.id)} class="border border-danger text-danger hover:bg-danger hover:text-white transition-colors duration-300 px-4 py-2 rounded">
+           <button onClick={() => handleDelete(row.original.id, row.original.deletelink )} class="border border-danger text-danger hover:bg-danger hover:text-white transition-colors duration-300 px-4 py-2 rounded">
            <BsFillTrashFill />
          </button>
          </div>
