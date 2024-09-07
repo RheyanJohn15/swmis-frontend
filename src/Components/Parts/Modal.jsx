@@ -5,8 +5,8 @@ const Modal = ({modalOpen, setModalOpen, content, title}) => {
   return (
     <AnimatePresence>
       {modalOpen && (
-        <div
-          className="fixed left-0 top-0 flex h-full min-h-screen w-full items-center justify-center bg-black/60 backdrop-blur-sm px-4 py-5"
+        <div 
+          className="fixed left-0 top-0 z-[999999] flex h-full min-h-screen w-full items-center justify-center bg-black/60 backdrop-blur-sm px-4 py-5"
         >
           <motion.div
             initial={{ opacity: 0, scale: 0 }}
@@ -21,7 +21,7 @@ const Modal = ({modalOpen, setModalOpen, content, title}) => {
           >
             <div className="flex justify-between p-4 border-b-2 border-grey">
                 <p className="text-black text-2xl">{title}</p>
-              <p className="text-black text-2xl p-1 rounded-full cursor-pointer hover:bg-grey/30" onClick={() => setModalOpen(false)}>
+              <p id="closeModal" className="text-black text-2xl p-1 rounded-full cursor-pointer hover:bg-grey/30" onClick={() => setModalOpen(false)}>
                 <BiX />
               </p>
             </div>

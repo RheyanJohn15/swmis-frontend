@@ -33,14 +33,16 @@ const text = {
             contact: "Contact",
             license: "License",
             address: "Address",
-            add: "Submit Driver Details"
+            add: "Submit Driver Details",
+            loading: "Submitting Driver Details",
         },
         addTModal: {
             model: "Model",
             plate: "Plate Number",
             carry: "Capacity",
             driver: "Assigned Driver",
-            add: "Submit Truck Details"
+            add: "Submit Truck Details",
+            loading: "Submitting Truck Details",
         }
     }
 }

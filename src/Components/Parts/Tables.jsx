@@ -1,97 +1,57 @@
+import { BsFillTrashFill } from "react-icons/bs";
+import { BsFillEyeFill } from "react-icons/bs";
+import { BiEdit } from "react-icons/bi";
 import { useMemo } from 'react';
 import {
   MaterialReactTable,
   useMaterialReactTable,
 } from 'material-react-table';
 
-//nested data is ok, see accessorKeys in ColumnDef below
-const data = [
-  {
-    name: {
-      firstName: 'John',
-      lastName: 'Doe',
-    },
-    address: '261 Erdman Ford',
-    city: 'East Daphne',
-    state: 'Kentucky',
-  },
-  {
-    name: {
-      firstName: 'Jane',
-      lastName: 'Doe',
-    },
-    address: '769 Dominic Grove',
-    city: 'Columbus',
-    state: 'Ohio',
-  },
-  {
-    name: {
-      firstName: 'Joe',
-      lastName: 'Doe',
-    },
-    address: '566 Brakus Inlet',
-    city: 'South Linda',
-    state: 'West Virginia',
-  },
-  {
-    name: {
-      firstName: 'Kevin',
-      lastName: 'Vandy',
-    },
-    address: '722 Emie Stream',
-    city: 'Lincoln',
-    state: 'Nebraska',
-  },
-  {
-    name: {
-      firstName: 'Joshua',
-      lastName: 'Rolluffs',
-    },
-    address: '32188 Larkin Turnpike',
-    city: 'Charleston',
-    state: 'South Carolina',
-  },
-];
 
-const Table = () => {
-  //should be memoized or stable
-  const columns = useMemo(
-    () => [
-      {
-        accessorKey: 'name.firstName', //access nested data with dot notation
-        header: 'First Name',
-        size: 150,
+const Table = ({data, col}) => {
+
+  const actionColumn = useMemo(
+    () => ({
+      id: 'actions',
+      accessorKey: 'actions',
+      header: 'Actions',
+      Cell: ({ row }) => {
+        console.log(row);
+        return (
+          <div className="flex gap-2">
+            <button onClick={()=>alert(row.original.id)} class="border border-success text-success hover:bg-success hover:text-white transition-colors duration-300 px-4 py-2 rounded">
+               <BiEdit />
+            </button>
+            <button onClick={()=>alert(row.original.id)} class="border border-info text-info hover:bg-info hover:text-white transition-colors duration-300 px-4 py-2 rounded">
+              <BsFillEyeFill />
+            </button>
+           <button onClick={()=>alert(row.original.id)} class="border border-danger text-danger hover:bg-danger hover:text-white transition-colors duration-300 px-4 py-2 rounded">
+           <BsFillTrashFill />
+         </button>
+         </div>
+        );
       },
-      {
-        accessorKey: 'name.lastName',
-        header: 'Last Name',
-        size: 150,
-      },
-      {
-        accessorKey: 'address', //normal accessorKey
-        header: 'Address',
-        size: 200,
-      },
-      {
-        accessorKey: 'city',
-        header: 'City',
-        size: 150,
-      },
-      {
-        accessorKey: 'state',
-        header: 'State',
-        size: 150,
-      },
-    ],
-    [],
+    }),
+    []
   );
+
+  const columns = useMemo(
+   () => [...col, actionColumn],
+    [col]
+  );
+
 
   const table = useMaterialReactTable({
     columns,
-    data, //data must be memoized or stable (useState, useMemo, defined outside of this component, etc.)
+    data,
+    state: {
+      columnOrder: [...col.map(c => c.accessorKey || c.id), 'actions'], // Force actions column to be last
+    },
   });
 
-  return <MaterialReactTable table={table} />;
+  return <MaterialReactTable
+  table={table}
+  />;
 };
 
 export default Table;

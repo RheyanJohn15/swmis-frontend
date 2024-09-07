@@ -85,7 +85,7 @@ const SideNav = ({select}) => {
 const NavItem = ({ children, selected, id, setSelected, link, tooltip }) => {
   return (
   <Link href={link}>
-     <Tooltip className="p-4 bg-black" content={tooltip} placement="right">
+     <Tooltip className="p-4 bg-black z-[999999]" content={tooltip} placement="right">
     <motion.button
       className="p-3 text-xl bg-primary hover:bg-secondary text-white rounded-md transition-colors relative"
       onClick={() => setSelected(id)}
