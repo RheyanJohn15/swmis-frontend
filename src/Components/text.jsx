@@ -34,7 +34,9 @@ const text = {
             license: "License",
             address: "Address",
             add: "Submit Driver Details",
-            loading: "Submitting Driver Details",
+            loading: "Submitting driver details please wait....",
+            deleting: "Deleting driver please wait....",
+            updating: "Updating driver details please wait...."
         },
         addTModal: {
             model: "Model",
@@ -42,7 +44,9 @@ const text = {
             carry: "Capacity",
             driver: "Assigned Driver",
             add: "Submit Truck Details",
-            loading: "Submitting Truck Details",
+            loading: "Submitting truck details please wait....",
+            deleting: "Deleting truck please wait....",
+            updating: "Updating truck details please wait...."
         }
     }
 }

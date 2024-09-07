@@ -10,15 +10,20 @@ import {
 import { confirmAlert } from 'react-confirm-alert'; 
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import Loading from "../Page/Loading";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { toastconfig } from "./Configs";
+import { useState } from "react";
 
-const Table = ({data, col}) => {
+const Table = ({data, col, deletingText, updateData}) => {
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleDelete = (dataId, deleteLink) => {
     confirmAlert({
       customUI: ({ onClose }) => {
 
-      
         const deleteData = async (id, link)=> {
+          setIsLoading(true);
           const accessAuth = window.sessionStorage.getItem('accessAuth');
           const api = `${process.env.NEXT_PUBLIC_API_URL}/${link}`;
 
@@ -32,9 +37,14 @@ const Table = ({data, col}) => {
           
           const data = await response.json();
           onClose();
+          setIsLoading(false)
           if(data.status == 'success'){
-            
+            updateData(data.data);
+            toast.success(data.message, toastconfig)
+          }else{
+            toast.error(data.message, toastconfig)
           }
+         
         }
         return (
           <div className="bg-white rounded-lg shadow-lg p-6 w-96 mx-auto flex justify-center flex-col items-center text-center">
@@ -104,9 +114,12 @@ const Table = ({data, col}) => {
     },
   });
 
-  return <MaterialReactTable
+  return <>
+  {isLoading ? <Loading text={deletingText} /> : ''}
+  <MaterialReactTable
   table={table}
-  />;
+  />
+  </>;
 };
 
 export default Table;

@@ -9,7 +9,7 @@ import Loading from "./Loading";
 import Table from "../Parts/Tables";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { toastconfig } from "../Parts/Configs";
 const TruckAndDriver = () =>{
 
     const [modalOpen, setModalOpen] = useState(false);
@@ -137,12 +137,12 @@ const TruckAndDriver = () =>{
                 <p className="text-black-500 dark:text-black-400">{text.truck_drivers.subheader}</p>
               </div>
              <div className="flex gap-4">
-             <button type="button" onClick={()=>{setModalOpen(true); setModalContent(<Driver />); setTitle(text.truck_drivers.addDriver)}}
+             <button type="button" onClick={()=>{setModalOpen(true); setModalContent(<Driver currentData={driverList} updateData={setDriverList} setModalOpen={setModalOpen} />); setTitle(text.truck_drivers.addDriver)}}
                       className="flex items-center gap-2 justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-primary hover:bg-primary-hover focus:ring-4 focus:ring-secondary  focus:outline-none dark:focus:ring-primary-hover">
                  <BsPersonAdd />
                 {text.truck_drivers.addDriver}
               </button>
-             <button type="button" onClick={()=>{setModalOpen(true); setModalContent(<Truck />); setTitle(text.truck_drivers.addTruck)}}
+             <button type="button" onClick={()=>{setModalOpen(true); setModalContent(<Truck currentData={truckList} updateData={setTruckList} setModalOpen={setModalOpen} />); setTitle(text.truck_drivers.addTruck)}}
                       className="flex items-center gap-2 justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-primary hover:bg-primary-hover focus:ring-4 focus:ring-secondary  focus:outline-none dark:focus:ring-primary-hover">
                  <FiTruck />
                 {text.truck_drivers.addTruck}
@@ -174,10 +174,14 @@ const TruckAndDriver = () =>{
             {selectedType == 'driver' ?  (<Table
                 data={driverList}
                 col={driverColumn}
+                deletingText={text.truck_drivers.addDModal.deleting}
+                updateData={setDriverList}
             />) :
             (<Table
             data={truckList}
             col={truckColumn}
+            deletingText={text.truck_drivers.addTModal.deleting}
+            updateData={setTruckList}
         />)}
             
 
@@ -187,7 +191,7 @@ const TruckAndDriver = () =>{
     )
 }
 
-const Driver = () => {
+const Driver = ({currentData, updateData, setModalOpen}) => {
 
     const [isLoading, setLoading] = useState(false);
     const [loadingText, setLoadingText] = useState('');
@@ -226,31 +230,24 @@ const Driver = () => {
             body: JSON.stringify(data)
         });
 
-        const toastConfig = {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            }
+      
 
         if(!response.ok){
             setLoading(false);
-            toast.error(response.message, toastConfig);
+            toast.error(response.message, toastconfig);
         }
 
         const result = await response.json();
         setLoading(false);
 
-        document.getElementById('closeModal').click();
+        setModalOpen(false);
 
         if(result.status == 'success'){
-            toast.success(result.message,toastConfig);
+            toast.success(result.message,toastconfig);
+            currentData.push(result.data);
+            updateData(currentData);
         }else{
-            toast.error(result.message, toastConfig);
+            toast.error(result.message, toastconfig);
         }
 
     }
@@ -301,7 +298,7 @@ const Driver = () => {
             </div>)
 }
 
-const Truck = () => {
+const Truck = ({currentData, updateData, setModalOpen}) => {
     const [model, setModel] = useState('');
     const [plateNum, setPlateNum] = useState('');
     const [canCarry, setCanCarry] = useState('');
@@ -356,32 +353,23 @@ const Truck = () => {
             body: JSON.stringify(data)
         });
 
-        const toastConfig = {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            }
-
-
         if(!response.ok){
             setLoading(false);
-            toast.error(response.message, toastConfig);
+            toast.error(response.message, toastconfig);
         }
 
         const result = await response.json();
         setLoading(false);
 
-        document.getElementById('closeModal').click();
+        setModalOpen(false);
         
         if(result.status == 'success'){
-            toast.success(result.message, toastConfig);
+            toast.success(result.message, toastconfig);
+            currentData.push(result.data);
+
+            updateData(currentData);
         }else{
-            toast.error(result.message, toastConfig);
+            toast.error(result.message, toastconfig);
         }
     }
 
