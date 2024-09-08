@@ -8,3 +8,5 @@ export const toastconfig = {
     progress: undefined,
     theme: "light",
     }
+
+export const access_token = window.sessionStorage.getItem('accessAuth');

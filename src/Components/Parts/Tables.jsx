@@ -15,7 +15,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { toastconfig } from "./Configs";
 import { useState } from "react";
 
-const Table = ({data, col, deletingText, updateData}) => {
+const Table = ({data, col, deletingText = null, updateData = null}) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleDelete = (dataId, deleteLink) => {
@@ -81,7 +81,6 @@ const Table = ({data, col, deletingText, updateData}) => {
       accessorKey: 'actions',
       header: 'Actions',
       Cell: ({ row }) => {
-        console.log(row);
         return (
           <div className="flex gap-2">
             <button onClick={()=>alert(row.original.id)} class="border border-success text-success hover:bg-success hover:text-white transition-colors duration-300 px-4 py-2 rounded">
