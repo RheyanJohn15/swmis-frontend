@@ -12,7 +12,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 import Loading from "../Page/Loading";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { toastconfig, access_token } from "./Configs";
+import { toastconfig } from "./Configs";
 import { useState } from "react";
 
 const Table = ({data, col, deletingText = null, updateData = null}) => {
@@ -25,7 +25,7 @@ const Table = ({data, col, deletingText = null, updateData = null}) => {
         const deleteData = async (id, link)=> {
           setIsLoading(true);
           const api = `${process.env.NEXT_PUBLIC_API_URL}/${link}`;
-
+          const access_token = typeof window !== "undefined" ? window.sessionStorage.getItem('accessAuth') : null;
           const response = await fetch(api, {
              method:"POST",
              headers:{
