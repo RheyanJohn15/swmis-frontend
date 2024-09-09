@@ -12,7 +12,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 import Loading from "../Page/Loading";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { toastconfig } from "./Configs";
+import { toastconfig, access_token } from "./Configs";
 import { useState } from "react";
 
 const Table = ({data, col, deletingText = null, updateData = null}) => {
@@ -24,14 +24,13 @@ const Table = ({data, col, deletingText = null, updateData = null}) => {
 
         const deleteData = async (id, link)=> {
           setIsLoading(true);
-          const accessAuth = window.sessionStorage.getItem('accessAuth');
           const api = `${process.env.NEXT_PUBLIC_API_URL}/${link}`;
 
           const response = await fetch(api, {
              method:"POST",
              headers:{
               'Content-Type': "application/json",
-              'Authorization': `Bearer ${accessAuth}`
+              'Authorization': `Bearer ${access_token}`
              }, body: JSON.stringify({id:id})
           });
           

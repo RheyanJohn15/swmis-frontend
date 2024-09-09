@@ -49,10 +49,11 @@ const Login = () => {
 
         const result = await response.json();
         resolve(result.message);
-
-        window.sessionStorage.setItem('accessAuth', result.data.access);
-        window.sessionStorage.setItem('user', JSON.stringify(result.data.account));
-
+        if (typeof window !== "undefined") {
+          sessionStorage.setItem('accessAuth', result.data.access);
+          sessionStorage.setItem('user', JSON.stringify(result.data.account));
+        }
+       
         router.push('/admin/dashboard');
 
         }catch(error){

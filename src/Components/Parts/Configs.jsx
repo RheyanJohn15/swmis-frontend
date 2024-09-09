@@ -9,4 +9,10 @@ export const toastconfig = {
     theme: "light",
     }
 
-export const access_token = window.sessionStorage.getItem('accessAuth');
+export const access_token = () => {
+        if (typeof window !== "undefined") {
+          // Code is running in the browser, so sessionStorage is available
+          return sessionStorage.getItem('accessAuth');
+        }
+        return null; // Default value when sessionStorage is not available (SSR or build time)
+      };

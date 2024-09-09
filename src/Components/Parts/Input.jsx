@@ -1,4 +1,3 @@
-import { AiOutlineUser } from "react-icons/ai"; 
 const Input = ({label, icon, placeholder, onchange}) => {
     return (
       <>

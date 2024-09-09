@@ -78,7 +78,19 @@ const text = {
     }, 
     Complaints:{
         header: "Complaints",
-        subheader: "If you have complaints send us a message"
+        subheader: "If you have complaints send us a message",
+        form:{
+            name: "Complainant Name",
+            nameHolder: "Name",
+            contact: "Contact",
+            contactHolder: "09#########",
+            nature: "Nature of complaints",
+            natureHolder: "-----Select Nature of complaint-------",
+            remark: "Remarks",
+            remarkHolder: "Describe your complaint",
+            submit: "Submit Complaint",
+            loading: "Submittting complaint please wait....."
+        }
     }
 }
 

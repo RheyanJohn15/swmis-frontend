@@ -18,13 +18,12 @@ const Routes = () =>{
     const [driverList, setDriverList] = useState([]);
     const [wayPointList, setWayPointList] = useState([]);
     const getAllDriver = async () => {
-        const accessAuth = window.sessionStorage.getItem('accessAuth');
 
         const api = `${process.env.NEXT_PUBLIC_API_URL}/truckdriver/listdriver/`;
 
         const response = await fetch(api, {
             method: "GET",
-            headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${accessAuth}`}
+            headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${access_token}`}
         });
 
         const result = await response.json();

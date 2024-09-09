@@ -9,7 +9,7 @@ import Loading from "./Loading";
 import Table from "../Parts/Tables";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { toastconfig } from "../Parts/Configs";
+import { toastconfig, access_token } from "../Parts/Configs";
 const TruckAndDriver = () =>{
 
     const [modalOpen, setModalOpen] = useState(false);
@@ -19,13 +19,12 @@ const TruckAndDriver = () =>{
     const [truckList, setTruckList] = useState([]);
 
     useEffect(() =>{
-        const accessAuth = window.sessionStorage.getItem('accessAuth');
         const truckApi = "truckdriver/listtruck";
         const driverApi = "truckdriver/listdriver";
 
         Promise.all([
-            getList(accessAuth, truckApi),
-            getList(accessAuth, driverApi)
+            getList(access_token, truckApi),
+            getList(access_token, driverApi)
           ])
           .then(([truckListData, driverListData]) => {
             setDriverList(driverListData);
