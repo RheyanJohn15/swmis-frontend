@@ -1,3 +1,5 @@
+import { Dashboard } from "@mui/icons-material"
+
 const text = {
     App: "Silay Waste Management Information Systems",
     title: "SWMIS",
@@ -90,6 +92,10 @@ const text = {
             remarkHolder: "Describe your complaint",
             submit: "Submit Complaint",
             loading: "Submittting complaint please wait....."
+        }, 
+        Dashboard: {
+            header: "Residence Complaints",
+            subheader: "Report and manage waste collection issues in your community"
         }
     }
 }
