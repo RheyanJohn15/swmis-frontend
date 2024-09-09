@@ -9,7 +9,7 @@ import { GiMineTruck } from "react-icons/gi";
 import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
-import { BsHouseDoorFill, BsFillChatLeftTextFill, BsFillPeopleFill   } from "react-icons/bs";
+import { BsHouseDoorFill  } from "react-icons/bs";
 import Link from "next/link";
 import { Tooltip } from "@material-tailwind/react";
 import text from "../text";
@@ -42,7 +42,7 @@ const SideNav = ({select}) => {
       {/* Temp logo from https://logoipsum.com/ */}
       <div className="flex flex-col gap-2 items-center">
       <Image
-       src="/logo/logo.png"
+       src="/Logo/logo.png"
        width={70}
        height={70}
        alt="Logo"

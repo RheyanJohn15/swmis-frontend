@@ -49,10 +49,10 @@ const Login = () => {
 
         const result = await response.json();
         resolve(result.message);
-        if (typeof window !== "undefined") {
-          sessionStorage.setItem('accessAuth', result.data.access);
-          sessionStorage.setItem('user', JSON.stringify(result.data.account));
-        }
+    
+          window.sessionStorage.setItem('accessAuth', result.data.access);
+          window.sessionStorage.setItem('user', JSON.stringify(result.data.account));
+      
        
         router.push('/admin/dashboard');
 
@@ -105,7 +105,7 @@ const Login = () => {
                 className="mx-auto flex gap-4 items-center flex-col justify-center"
               >
                 
-                <Image src="/logo/logo.png" width={100} height={100} alt="Logo" />
+                <Image src="/Logo/logo.png" width={100} height={100} alt="Logo" />
                 <h1 className="text-2xl font-semibold text-primary">{text.Login.title}</h1>
               </Link>
             </div>

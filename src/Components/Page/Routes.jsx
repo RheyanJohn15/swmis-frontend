@@ -2,7 +2,7 @@ import { MdOutlineSend } from "react-icons/md";
 import { BsFillPersonBadgeFill } from "react-icons/bs"; 
 import { AiFillFileAdd } from "react-icons/ai"; 
 import Loading from "./Loading";
-import { access_token, toastconfig } from "../Parts/Configs";
+import { toastconfig } from "../Parts/Configs";
 import { CgAdd } from "react-icons/cg"; 
 import MapRoutes from "../Parts/MapRoutes";
 import Table from "../Parts/Tables";
@@ -17,6 +17,8 @@ import Searching from "../Parts/Searching";
 const Routes = () =>{
     const [driverList, setDriverList] = useState([]);
     const [wayPointList, setWayPointList] = useState([]);
+    const access_token = typeof window !== "undefined" ? window.sessionStorage.getItem('accessAuth') : null;
+    
     const getAllDriver = async () => {
 
         const api = `${process.env.NEXT_PUBLIC_API_URL}/truckdriver/listdriver/`;
@@ -32,6 +34,7 @@ const Routes = () =>{
     }
 
     useEffect(()=>{
+  
         getAllDriver();
     }, []);
 

@@ -80,7 +80,7 @@ export default function Home() {
           <Image
             className="object-cover object-center rounded"
             alt="logo"
-            src="/logo/logo.png"
+            src="/Logo/logo.png"
             width={700}
             height={700}
           />
