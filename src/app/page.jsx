@@ -11,7 +11,7 @@ import Input from "@/Components/Parts/Input";
 import { useState } from "react";
 import Loading from "@/Components/Page/Loading";
 import TextArea from "@/Components/Parts/TextArea";
-import { toastconfig, access_token } from "@/Components/Parts/Configs";
+import { toastconfig } from "@/Components/Parts/Configs";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
