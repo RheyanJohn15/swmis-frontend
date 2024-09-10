@@ -61,6 +61,11 @@ const text = {
             loading: "Submitting truck details please wait....",
             deleting: "Deleting truck please wait....",
             updating: "Updating truck details please wait...."
+        },
+        View:{
+            truck: "Truck Details",
+            driver: "Driver Details",
+            
         }
     },
     Routes:{

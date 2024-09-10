@@ -10,6 +10,7 @@ import Table from "../Parts/Tables";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { toastconfig  } from "../Parts/Configs";
+
 const TruckAndDriver = () =>{
 
     const [modalOpen, setModalOpen] = useState(false);
@@ -177,12 +178,14 @@ const TruckAndDriver = () =>{
                 col={driverColumn}
                 deletingText={text.truck_drivers.addDModal.deleting}
                 updateData={setDriverList}
+                type={selectedType}
             />) :
             (<Table
             data={truckList}
             col={truckColumn}
             deletingText={text.truck_drivers.addTModal.deleting}
             updateData={setTruckList}
+            type={selectedType}
         />)}
             
 
@@ -231,7 +234,6 @@ const Driver = ({currentData, updateData, setModalOpen}) => {
             body: JSON.stringify(data)
         });
 
-      
 
         if(!response.ok){
             setLoading(false);

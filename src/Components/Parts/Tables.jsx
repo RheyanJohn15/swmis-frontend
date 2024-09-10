@@ -2,7 +2,7 @@ import { RiDeleteBin2Line } from "react-icons/ri";
 import { BsFillTrashFill } from "react-icons/bs";
 import { BsFillEyeFill } from "react-icons/bs";
 import { BiEdit } from "react-icons/bi";
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import {
   MaterialReactTable,
   useMaterialReactTable,
@@ -14,8 +14,9 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { toastconfig } from "./Configs";
 import { useState } from "react";
+import ContentViewer from "./ContentViewer";
 
-const Table = ({data, col, deletingText = null, updateData = null}) => {
+const Table = ({data, col, deletingText = null, updateData = null, type}) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleDelete = (dataId, deleteLink) => {
@@ -74,6 +75,13 @@ const Table = ({data, col, deletingText = null, updateData = null}) => {
     });
   };
 
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
+  useEffect(()=>{
+      if(isDrawerOpen == false){
+        setSelectedId(null);
+      }
+  }, [isDrawerOpen]);
   const actionColumn = useMemo(
     () => ({
       id: 'actions',
@@ -85,7 +93,7 @@ const Table = ({data, col, deletingText = null, updateData = null}) => {
             <button onClick={()=>alert(row.original.id)} class="border border-success text-success hover:bg-success hover:text-white transition-colors duration-300 px-4 py-2 rounded">
                <BiEdit />
             </button>
-            <button onClick={()=>alert(row.original.id)} class="border border-info text-info hover:bg-info hover:text-white transition-colors duration-300 px-4 py-2 rounded">
+            <button onClick={()=>{setIsDrawerOpen(true); setSelectedId(row.original.id)}} class="border border-info text-info hover:bg-info hover:text-white transition-colors duration-300 px-4 py-2 rounded">
               <BsFillEyeFill />
             </button>
            <button onClick={() => handleDelete(row.original.id, row.original.deletelink )} class="border border-danger text-danger hover:bg-danger hover:text-white transition-colors duration-300 px-4 py-2 rounded">
@@ -117,6 +125,21 @@ const Table = ({data, col, deletingText = null, updateData = null}) => {
   <MaterialReactTable
   table={table}
   />
+
+
+{
+  selectedId != null ?
+  <ContentViewer 
+  isDrawerOpen={isDrawerOpen} 
+  setIsDrawerOpen={setIsDrawerOpen} 
+  type={type} 
+  selectedId={selectedId} 
+  />
+
+  :
+
+  ''
+}
   </>;
 };
 
