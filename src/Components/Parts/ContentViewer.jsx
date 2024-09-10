@@ -153,6 +153,60 @@ const TruckDetail = ({id, token}) => {
 }
 
 const DriverDetail = ({id, token}) => {
+  const defaultDriver = {
+            first_name: "--------",
+            last_name: "---------",
+            license: "Loading....",
+            contact: "Loading.....",
+            address: "Loading.....",
+  }
+
+  const [driverList, setDriverList] = useState(defaultDriver);
+
+  const details = async () => {
+    const api = `${process.env.NEXT_PUBLIC_API_URL}/truckdriver/driverdetail/`;
+
+    const response = await fetch(api, {
+        method: "POST",
+        headers: {"Content-Type":"application/json", "Authorization": `Bearer ${token}`},
+        body: JSON.stringify({id:id})
+    });
+
+    if(!response.ok){
+        throw new Error(response.statusText);
+    }
+
+    const result = await response.json();
+
+    return result.data;
+}
+
+useEffect(()=>{
+    details().then((result) => {
+        setDriverList(result);
+        console.log(result);
+      });
+},[]);
+
+
+  return (
+    <div className="mx-auto w-full bg-white rounded-lg shadow-md overflow-hidden dark:bg-gray-800 dark:border-gray-700">
+    <div className="p-6">
+      <h5 className="mb-2 text-2xl font-bold text-gray-900 dark:text-white">
+        Driver: {driverList.first_name} {driverList.last_name}
+      </h5>
+      <p className="mb-3 text-sm text-gray-500 dark:text-gray-400">
+        License: {driverList.license}
+      </p>
+      <p className="mb-3 text-sm text-gray-500 dark:text-gray-400">
+        Contact: {driverList.contact}
+      </p>
+      <p className="mb-3 text-sm text-gray-500 dark:text-gray-400">
+        Address: {driverList.address}
+      </p>
+    </div>
+  </div> 
+  )
 
 }
 
