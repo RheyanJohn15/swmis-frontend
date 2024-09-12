@@ -1,4 +1,4 @@
-const Input = ({label, icon, placeholder, onchange}) => {
+const Input = ({label, icon, placeholder, onchange, value=null}) => {
     return (
       <>
         <label className='mb-[10px] mt-2 block text-base font-medium text-dark dark:text-white'>

@@ -70,7 +70,7 @@ const ResidenceComplaints = () =>{
           <p className="text-gray-500 dark:text-gray-400">{text.Complaints.Dashboard.subheader}</p>
         </div>
       </div>
-      <Table data={complaints} col={column} />
+      <Table data={complaints} col={column} type="complaints" />
 </>
 }
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-const Select = ({icon, list, holder, label, onchange}) => {
+const Select = ({icon, list, holder, label, onchange, value = null}) => {
 
     const [options, setOptions] = useState([]);
     useEffect(() => {
@@ -18,10 +18,11 @@ const Select = ({icon, list, holder, label, onchange}) => {
           <select 
             onChange={(e)=> onchange(e.target.value)}
             required 
+            value={value}
             className='relative z-20 w-full appearance-none rounded-md border border-stroke dark:border-dark-3 bg-transparent py-[10px] px-12 text-dark-6 outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-gray-2'>
             <option value='' disabled selected className='dark:bg-dark-2'>{holder}</option>
             {options.map((data, index) => (
-            <option key={index} value={data.id} className='dark:bg-dark-2'>
+            <option selected={value === data.id} key={index} value={data.id} className='dark:bg-dark-2'>
               {data.first_name + ' ' + data.last_name}
             </option>
           ))}

@@ -21,6 +21,9 @@ const ContentViewer = ({isDrawerOpen, setIsDrawerOpen, type, selectedId}) => {
             setTitle(text.truck_drivers.View.driver);
             setContent(<DriverDetail id={selectedId} token={accessAuth} />)
             break;
+        case "complaints":
+          setTitle(text.Complaints.View);
+          setContent(<ComplaintDetails id={selectedId} token={accessAuth} />)
         default:
             setTitle('Default');
             break;
@@ -184,7 +187,6 @@ const DriverDetail = ({id, token}) => {
 useEffect(()=>{
     details().then((result) => {
         setDriverList(result);
-        console.log(result);
       });
 },[]);
 
@@ -208,6 +210,60 @@ useEffect(()=>{
   </div> 
   )
 
+}
+
+const ComplaintDetails = ({id, token}) => {
+
+  const loadComplaint = {
+    complainant: "Loading.....",
+    remarks: "Loading......",
+    contact: "Loading.....",
+    nature: "Loading.....",
+  }
+
+  const [compList, setCompList] = useState(loadComplaint);
+
+  const getDetails = async () => {
+    const api = `${process.env.NEXT_PUBLIC_API_URL}/complaints/details/`;
+
+    const response = await fetch(api, {
+      method: "POST",
+      headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}`},
+      body: JSON.stringify({id:id})
+    });
+
+    if(!response.ok){
+      console.error(response.responseText);
+    }
+
+    const result = await response.json();
+
+    return result.data;
+  }
+
+  useEffect(()=> {
+    getDetails().then((res)=>{
+      setCompList(res);
+    });
+  }, []);
+
+  return (
+    <div className="mx-auto w-full bg-white rounded-lg shadow-md overflow-hidden dark:bg-gray-800 dark:border-gray-700">
+    <div className="p-6">
+      <h5 className="mb-2 text-2xl font-bold text-gray-900 dark:text-white">
+        Complainant: {compList.complainant}
+      </h5>
+      <p className="mb-3 text-sm text-gray-500 dark:text-gray-400">
+        Contact: {compList.contact}
+      </p>
+      <p className="mb-3 text-sm text-gray-500 dark:text-gray-400">
+        Nature: {compList.nature}
+      </p>
+     <div className="border border-1 w-full rounded p-8">
+      <p className="text-base text-black">{compList.remarks}</p>
+     </div>
+    </div>
+  </div> )
 }
 
 export default ContentViewer;

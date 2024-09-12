@@ -48,6 +48,7 @@ const text = {
             license: "License",
             address: "Address",
             add: "Submit Driver Details",
+            update: "Update Driver Details",
             loading: "Submitting driver details please wait....",
             deleting: "Deleting driver please wait....",
             updating: "Updating driver details please wait...."
@@ -58,6 +59,7 @@ const text = {
             carry: "Capacity",
             driver: "Assigned Driver",
             add: "Submit Truck Details",
+            update: "Update Truck Details",
             loading: "Submitting truck details please wait....",
             deleting: "Deleting truck please wait....",
             updating: "Updating truck details please wait...."
@@ -65,7 +67,6 @@ const text = {
         View:{
             truck: "Truck Details",
             driver: "Driver Details",
-            
         }
     },
     Routes:{
@@ -101,7 +102,9 @@ const text = {
         Dashboard: {
             header: "Residence Complaints",
             subheader: "Report and manage waste collection issues in your community"
-        }
+        },
+        View: "Complaint Details"
+        
     }
 }
 
