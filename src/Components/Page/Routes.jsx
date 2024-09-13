@@ -1,3 +1,4 @@
+import { BiX } from "react-icons/bi"; 
 import { MdOutlineSend } from "react-icons/md"; 
 import { BsFillPersonBadgeFill } from "react-icons/bs"; 
 import { AiFillFileAdd } from "react-icons/ai"; 
@@ -122,12 +123,18 @@ const Routes = () =>{
       setIsOpen(!isOpen)
     }
 
+    const removeWaypoint = (indexToRemove) => {
+      setWayPointList((prevWaypoints) =>
+        prevWaypoints.filter((_, index) => index !== indexToRemove)
+      );
+    };
+
     return<>
      <ToastContainer />
         {isLoading? <Loading text={text.Routes.addRoute.loading} /> : ''}
-     <MapRoutes setwaypointlist={setWayPointList} />
+   
      <header className="border-b border-grey bg-white">
-        <div className="mx-auto max-w-screen-xl py-4">
+        <div className="w-full px-8 py-4 ">
           <div className="flex flex-col items-start gap-4 md:flex-row md:items-center md:justify-between">
             <div>
               <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
@@ -139,7 +146,7 @@ const Routes = () =>{
               </p>
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 ">
               <button
                 className="flex gap-2 items-center rounded bg-primary px-5 py-3 text-sm font-medium text-white transition hover:bg-primary-hover focus:outline-none focus:ring"
                 type="button"
@@ -163,6 +170,7 @@ const Routes = () =>{
             transition={{ duration: 0.3 }}
             className="mx-auto w-full bg-background-hover p-4"
           >
+       <MapRoutes setwaypointlist={setWayPointList} removeWaypoint={removeWaypoint} />
             <form onSubmit={submitData} className="bg-background-hover p-4 rounded-md">
               <Input 
                 label={text.Routes.addRoute.routelabel} 
@@ -185,7 +193,7 @@ const Routes = () =>{
               <div className="border border-1 overflow-y-auto border-black rounded w-full h-[30vh] mt-4">
               <ul>
                 {wayPointList.map((list, index)=>(
-                    <li key={index}  className="block text-primary hover:text-white hover:bg-primary-hover rounded-lg px-4 py-2 transition-colors duration-300">Waypoint({index + 1}): {list.placename}</li>
+                    <li key={index}  className="w-full flex justify-between items-center text-primary hover:text-white  hover:bg-primary-hover rounded-lg px-4 py-2 transition-colors duration-300"><span>Waypoint({index + 1}): {list.placename}</span> <span  onClick={() => removeWaypoint(index)} className="cursor-pointer"><BiX /></span></li>
                 ))}
                 </ul>
 
@@ -194,6 +202,8 @@ const Routes = () =>{
                   <button type="submit" className="flex gap-2 items-center rounded bg-primary px-5 py-3 text-sm font-medium text-white transition hover:bg-primary-hover focus:outline-none focus:ring"><MdOutlineSend />{text.Routes.addRoute.submit}</button>
                 </div>
             </form>
+
+       
           </motion.div>
         )}
       </AnimatePresence>
