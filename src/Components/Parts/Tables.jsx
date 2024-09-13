@@ -23,14 +23,14 @@ const Table = ({ data, col, deletingText = null, updateData = null, type }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isOpenUpdateModal, setIsOpenUpdateModal] = useState(false);
   const [updateContent, setUpdateContent] = useState(null);
-
   const setUpdateContentModal = (modalType, id)=>{
+    console.log(modalType);
     switch(modalType){
       case "driver":
-        setUpdateContent(<DriverUpdate id={id} closeModal={setIsOpenUpdateModal} />);
+        setUpdateContent(<DriverUpdate id={id} closeModal={setIsOpenUpdateModal} updateData={updateData} />);
         break;
       case "truck":
-        setUpdateContent(<TruckUpdate id={id} closeModal={setIsOpenUpdateModal} />)
+        setUpdateContent(<TruckUpdate id={id} closeModal={setIsOpenUpdateModal} updateData={updateData} />)
         break;
     }
   }
@@ -219,7 +219,7 @@ const UpdateModal = ({ isOpen, setIsOpen, children }) => {
   );
 };
 
-const DriverUpdate = ({id, closeModal}) => {
+const DriverUpdate = ({id, closeModal, updateData}) => {
   const [isLoading, setLoading] = useState(false);
 
   const [fname, setFname] = useState('');
@@ -292,8 +292,7 @@ const DriverUpdate = ({id, closeModal}) => {
 
     if(result.status == 'success'){
         toast.success(result.message,toastconfig);
-        currentData.push(result.data);
-        updateData(currentData);
+        updateData(result.data);
     }else{
         toast.error(result.message, toastconfig);
     }
@@ -343,7 +342,7 @@ const DriverUpdate = ({id, closeModal}) => {
   )
 }
 
-const TruckUpdate = ({id, closeModal}) => {
+const TruckUpdate = ({id, closeModal, updateData}) => {
   const [model, setModel] = useState('');
   const [plateNum, setPlateNum] = useState('');
   const [canCarry, setCanCarry] = useState('');
@@ -354,28 +353,114 @@ const TruckUpdate = ({id, closeModal}) => {
 
   const [isLoading, setLoading] = useState(false);
   const [loadingText, setLoadingText] = useState('');
+  const fetchAllDrivers = async ()=> {
+
+    const api = `${process.env.NEXT_PUBLIC_API_URL}/truckdriver/listdriver/`
+    const response = await fetch(api, {
+        method: "GET",
+        headers: {
+            'Content-Type': "application/json",
+            'Authorization' : `Bearer ${accessAuth}`
+        }
+    });
+
+    const result = await response.json();
+
+    setDriverList(result.data);
+}
+
+const getTruckDetails = async () => {
+  const api = `${process.env.NEXT_PUBLIC_API_URL}/truckdriver/truckdetail/`;
+
+  const accessAuth = window.sessionStorage.getItem('accessAuth');
+  const response = await fetch(api,{
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${accessAuth}`,
+      },
+      body: JSON.stringify({id:id})
+  });
+
+  const result = await response.json();
+  
+  return result.data;
+}
+useEffect(()=> {
+   fetchAllDrivers();
+   
+   getTruckDetails().then((data)=> {
+      setModel(data.model);
+      setPlateNum(data.plate_number);
+      setCanCarry(data.can_carry);
+      setDriver(data.driver);
+   });
+}, []);
+
+
+
+const updateTruck = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+  const data = {
+      id: id,
+      model: model,
+      plate_number: plateNum,
+      can_carry: canCarry,
+      driver: driver   
+  }
+
+  const api = `${process.env.NEXT_PUBLIC_API_URL}/truckdriver/addtruck/`;
+  const accessAuth = window.sessionStorage.getItem('accessAuth');
+  const response = await fetch(api,{
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${accessAuth}`,
+      },
+      body: JSON.stringify(data)
+  });
+
+  if(!response.ok){
+      setLoading(false);
+      toast.error(response.message, toastconfig);
+  }
+
+  const result = await response.json();
+  setLoading(false);
+  closeModal(false);
+  if(result.status == 'success'){
+      toast.success(result.message, toastconfig);
+      updateData(result.data);
+  }else{
+      toast.error(result.message, toastconfig);
+  }
+}
+
 
   return (
-    <form className="w-full p-8">
+    <>
+    {isLoading ? <Loading text={text.truck_drivers.addTModal.updating} /> : null}
+    <form onSubmit={updateTruck} className="w-full p-8">
       <div className="grid gap-4 mb-4 sm:grid-cols-2">
         <div>
           <label for="model" className="block mb-2 text-sm font-medium text-black dark:text-white">{text.truck_drivers.addTModal.model}</label>
-          <input type="text" onChange={(e) => setModel(e.target.value)} id="model" className="bg-black-50 border border-black text-black text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-black-700 dark:border-black-600 dark:placeholder-black-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder={text.truck_drivers.addTModal.model} required />
+          <input value={model} type="text" onChange={(e) => setModel(e.target.value)} id="model" className="bg-black-50 border border-black text-black text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-black-700 dark:border-black-600 dark:placeholder-black-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder={text.truck_drivers.addTModal.model} required />
         </div>
         <div>
           <label for="plate" className="block mb-2 text-sm font-medium text-black dark:text-white">{text.truck_drivers.addTModal.plate}</label>
-          <input type="text" onChange={(e) => setPlateNum(e.target.value)} id="plate" className="bg-black-50 border border-black text-black text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-black-700 dark:border-black-600 dark:placeholder-black-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder={text.truck_drivers.addTModal.plate} required />
+          <input value={plateNum} type="text" onChange={(e) => setPlateNum(e.target.value)} id="plate" className="bg-black-50 border border-black text-black text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-black-700 dark:border-black-600 dark:placeholder-black-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder={text.truck_drivers.addTModal.plate} required />
         </div>
         <div>
           <label for="capacity" className="block mb-2 text-sm font-medium text-black dark:text-white">{text.truck_drivers.addTModal.carry}</label>
-          <input type="text" id="capacity" onChange={(e) => setCanCarry(e.target.value)} className="bg-black-50 border border-black text-black text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-black-700 dark:border-black-600 dark:placeholder-black-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder={text.truck_drivers.addTModal.carry} required />
+          <input value={canCarry} type="text" id="capacity" onChange={(e) => setCanCarry(e.target.value)} className="bg-black-50 border border-black text-black text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-black-700 dark:border-black-600 dark:placeholder-black-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder={text.truck_drivers.addTModal.carry} required />
         </div>
         <div>
           <label for="assigned" className="block mb-2 text-sm font-medium text-black dark:text-white">{text.truck_drivers.addTModal.driver}</label>
-          <select id="assigned" required onChange={(e) => setDriver(e.target.value)} className="bg-black-50 border border-black text-black text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-black-700 dark:border-black-600 dark:placeholder-black-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+          <select value={driver} id="assigned" required onChange={(e) => setDriver(e.target.value)} className="bg-black-50 border border-black text-black text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-black-700 dark:border-black-600 dark:placeholder-black-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
             <option selected disabled value="">------Select driver------</option>
             {driverList.map((list, index) => (
-              <option key={index} value={list.id}>{list.first_name} {list.last_name}</option>
+              <option elected={list.id === driver} key={index} value={list.id}>{list.first_name} {list.last_name}</option>
             ))}
           </select>
         </div>
@@ -388,6 +473,7 @@ const TruckUpdate = ({id, closeModal}) => {
         </button>
       </div>
     </form>
+    </>
   )
 }
 
